@@ -526,4 +526,19 @@ body {
   h1 {
     font-size: 1.2rem;
   }
+} 
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.navbar-logo {
+  height: 32px;
+  width: 32px;
+  object-fit: contain;
+  border-radius: 4px;
 }
