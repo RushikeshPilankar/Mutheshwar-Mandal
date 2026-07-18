@@ -1,53 +1,31 @@
-const BASE_URL = "http://localhost:8080/api/donations";
+const BASE_URL = "https://crushed-gear-cold.ngrok-free.dev/api/donations";
 
 export const donationApi = {
   create: async (data) => {
     const res = await fetch(BASE_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "1",
+      },
       body: JSON.stringify(data),
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(JSON.stringify(err));
-    }
-    return res.json();
-  },
 
-  update: async (id, data) => {
-    const res = await fetch(`${BASE_URL}/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    if (!res.ok) throw new Error("Update failed");
+    if (!res.ok) throw new Error(await res.text());
     return res.json();
   },
 
   getAll: async (festivalYear) => {
-    const res = await fetch(`${BASE_URL}?festivalYear=${festivalYear}`);
-    if (!res.ok) throw new Error("Failed to fetch records");
-    return res.json();
-  },
-
-  filterByDateRange: async (start, end, festivalYear) => {
     const res = await fetch(
-      `${BASE_URL}/filter?start=${start}&end=${end}&festivalYear=${festivalYear}`
+      `${BASE_URL}?festivalYear=${festivalYear}`,
+      {
+        headers: {
+          "ngrok-skip-browser-warning": "1",
+        },
+      }
     );
-    if (!res.ok) throw new Error("Filter failed");
-    return res.json();
-  },
 
-  getTotal: async (start, end, festivalYear) => {
-    const res = await fetch(
-      `${BASE_URL}/total?start=${start}&end=${end}&festivalYear=${festivalYear}`
-    );
-    if (!res.ok) throw new Error("Total fetch failed");
+    if (!res.ok) throw new Error(await res.text());
     return res.json();
-  },
-
-  delete: async (id) => {
-    const res = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
-    if (!res.ok) throw new Error("Delete failed");
   },
 };
