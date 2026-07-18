@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { donationApi } from "../api/donationApi";
 import VarganiModal from "../components/VarganiModal";
 import Pagination from "../components/Pagination";
+import { getStaticTotalForYear } from "../constants/yearlyTotals";
 
 const FESTIVAL_YEAR = new Date().getFullYear();
 const PAGE_SIZE = 10;
@@ -37,6 +38,44 @@ export default function Vargani() {
   useEffect(() => {
     loadRecords();
   }, []);
+
+  // Static target for this year (hardcoded lookup, not from backend)
+  const staticTotal = getStaticTotalForYear(FESTIVAL_YEAR);
+
+  // Actual amount collected — summed from ALL loaded records (unfiltered),
+  // since this badge should reflect the true grand total, not the current filter view.
+  const actualTotal = useMemo(() => {
+    return records.reduce((sum, r) => sum + Number(r.amount), 0);
+  }, [records]);
+
+  const difference = actualTotal - staticTotal;
+  // difference < 0  → still short, show "Pending"
+  // difference > 0  → collected more than target, show "Overpay"
+  // difference === 0 → exactly matched
+
+  // Per-row comparison: checks each record's own amount against the
+  // static target for THAT record's festivalYear (not the page-level year),
+  // so this stays correct even if the grid ever shows multiple years at once.
+  const renderVsTarget = (record) => {
+    const target = getStaticTotalForYear(record.festivalYear);
+    const recordDiff = Number(record.amount) - target;
+
+    if (recordDiff < 0) {
+      return (
+        <span className="vs-target pending">
+          Pending ₹{Math.abs(recordDiff)}
+        </span>
+      );
+    }
+    if (recordDiff > 0) {
+      return (
+        <span className="vs-target overpay">
+          Overpay ₹{recordDiff}
+        </span>
+      );
+    }
+    return <span className="vs-target matched">Matched</span>;
+  };
 
   // Why useMemo: filtering runs on every render otherwise, even when the
   // user is just typing in the Add form (unrelated state). useMemo re-runs
@@ -109,6 +148,9 @@ export default function Vargani() {
     <div className="vargani-page">
       <div className="page-header">
         <h1>Vargani Collection</h1>
+
+        
+
         <button className="add-btn" onClick={handleAddClick}>
           + Add Entry
         </button>
@@ -175,6 +217,8 @@ export default function Vargani() {
                 <th>Home/Flat</th>
                 <th>Mobile</th>
                 <th>Amount</th>
+                <th>Fixed Amount</th>
+                <th>Vs Target</th>
                 <th>Mode</th>
                 <th>Status</th>
                 <th>Date</th>
@@ -184,7 +228,7 @@ export default function Vargani() {
             <tbody>
               {paginatedRecords.length === 0 ? (
                 <tr>
-                  <td colSpan="9" className="empty-row">
+                  <td colSpan="11" className="empty-row">
                     No records found
                   </td>
                 </tr>
@@ -196,6 +240,8 @@ export default function Vargani() {
                     <td>{r.homeFlatNo}</td>
                     <td>{r.mobileNo}</td>
                     <td>₹{r.amount}</td>
+                    <td>₹{getStaticTotalForYear(r.festivalYear)}</td>
+                    <td>{renderVsTarget(r)}</td>
                     <td>{r.paymentMode}</td>
                     <td>
                       <span className={`status-badge ${r.status.toLowerCase()}`}>{r.status}</span>

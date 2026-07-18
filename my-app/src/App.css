@@ -328,3 +328,202 @@ body {
   color: #c1440e;
   margin: 8px 0;
 }
+
+.static-total-badge {
+  background: #fff3e0;
+  color: #333;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  border: 1px solid #ffcc80;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 200px;
+}
+
+.badge-row strong {
+  font-size: 1rem;
+}
+
+.pending-text {
+  color: #c62828;
+}
+
+.overpay-text {
+  color: #2e7d32;
+}
+
+.matched-text {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.vs-target {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.vs-target.pending {
+  color: #c62828;
+  background: #ffebee;
+}
+
+.vs-target.overpay {
+  color: #2e7d32;
+  background: #e8f5e9;
+}
+
+.vs-target.matched {
+  color: #1565c0;
+  background: #e3f2fd;
+}
+.modal-header h2 {
+  color: #c1440e;
+}
+/* ============ MOBILE RESPONSIVE ============ */
+
+@media (max-width: 768px) {
+  /* Navbar */
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+
+  .navbar-links {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .navbar-links a {
+    font-size: 0.85rem;
+  }
+
+  /* Main content padding */
+  .app-main {
+    padding: 16px 10px;
+  }
+
+  /* Page header (Vargani page) */
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .page-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .add-btn {
+    width: 100%;
+  }
+
+  .year-fixed-amount {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  /* Filter rows: stack instead of side-by-side */
+  .filter-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filter-row label {
+    width: 100%;
+  }
+
+  .filter-row input,
+  .filter-row select {
+    width: 100%;
+  }
+
+  .search-field {
+    min-width: 0;
+  }
+
+  .reset-btn {
+    width: 100%;
+  }
+
+  /* Table: allow horizontal scroll instead of squishing columns */
+  .donation-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .donation-table th,
+  .donation-table td {
+    font-size: 0.78rem;
+    padding: 8px 6px;
+  }
+
+  /* Dashboard stat cards */
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .stat-card strong {
+    font-size: 1.2rem;
+  }
+
+  /* Modal: full-width on small screens */
+  .modal-content {
+    padding: 16px;
+    max-width: 100%;
+    width: calc(100% - 20px);
+  }
+
+  .modal-content .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Pagination: allow wrapping, smaller buttons */
+  .pagination {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .pagination button {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+  }
+
+  /* Reports page */
+  .report-summary {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-brand {
+    font-size: 1rem;
+  }
+
+  .navbar-links {
+    flex-wrap: wrap;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+}
