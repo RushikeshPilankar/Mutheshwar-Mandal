@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/donations")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "https://mutheshwarmandal.netlify.app"})
 public class DonationController {
 
     private final DonationService donationService;

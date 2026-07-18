@@ -22,6 +22,8 @@ public interface DonationRecordRepository extends JpaRepository<DonationRecord, 
             @Param("start") LocalDate start,
             @Param("end") LocalDate end,
             @Param("year") Integer year);
+    
+    boolean existsByPavtiNoAndFestivalYear(Integer pavtiNo, Integer festivalYear);
 
     List<DonationRecord> findByStatus(com.mutheshwarmandal.hisabkitab.entity.PaymentStatus status);
 }

@@ -3,6 +3,7 @@ package com.mutheshwarmandal.hisabkitab.service;
 import com.mutheshwarmandal.hisabkitab.dto.DonationRequestDTO;
 import com.mutheshwarmandal.hisabkitab.dto.DonationResponseDTO;
 import com.mutheshwarmandal.hisabkitab.entity.DonationRecord;
+import com.mutheshwarmandal.hisabkitab.exception.DuplicateResourceException;
 import com.mutheshwarmandal.hisabkitab.exception.ResourceNotFoundException;
 import com.mutheshwarmandal.hisabkitab.repository.DonationRecordRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,13 @@ public class DonationServiceImpl implements DonationService {
 
     @Override
     public DonationResponseDTO create(DonationRequestDTO dto) {
+    	
+        if (repository.existsByPavtiNoAndFestivalYear(dto.getPavtiNo(), dto.getFestivalYear())) {
+            throw new DuplicateResourceException(
+                    "Pavti No. " + dto.getPavtiNo() + " already exists for year " +
+                    dto.getFestivalYear() + ". Please use a different Pavti No."
+            );
+        }
         DonationRecord record = DonationRecord.builder()
                 .pavtiNo(dto.getPavtiNo())
                 .name(dto.getName())
